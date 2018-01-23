@@ -1,0 +1,29 @@
+.App {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    padding: 20px;
+}
+
+.EntitiesList {
+    list-style-type: none;
+    padding: 0;
+}
+.EntitiesList li {
+    padding: 20px 10px;
+    cursor: pointer;
+}
+.EntitiesList .translation {
+    color: darkgray;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-left: 1rem;
+}
+
+.Editor {
+    height: 200px;
+    width: 80%;
+}
+
+.original {
+    color: darkgray;
+}
