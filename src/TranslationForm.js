@@ -38,7 +38,7 @@ export default class TranslationForm extends Component {
 
     saveTranslation(event) {
         event.preventDefault();
-        this.props.saveTranslation(this.props.entity.id, this.props.translation.locale, this.state.translation);
+        this.props.saveTranslation(this.state.translation);
     }
 
     render() {
@@ -55,7 +55,7 @@ export default class TranslationForm extends Component {
                     />
                 </p>
                 <p>
-                    <button onClick={ this.saveTranslation.bind(this) }>Save</button>
+                    <button onClick={ this.saveTranslation.bind(this) }>Suggest</button>
                 </p>
             </form>
         );
