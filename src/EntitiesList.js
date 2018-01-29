@@ -2,7 +2,6 @@ import React from 'react';
 
 
 const EntitiesList = ({ entities, translations, onItemClick }) => {
-    console.log(translations);
     let results = entities.map((entity, i) => {
         const translation = translations.find(o => o.entity === entity.id);
         let translationElt = null;

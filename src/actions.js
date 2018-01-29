@@ -1,4 +1,3 @@
-
 export const SELECT_ENTITY = 'SELECT_ENTITY';
 export function selectEntity(entity) {
     return {
@@ -6,7 +5,6 @@ export function selectEntity(entity) {
         entity,
     };
 }
-
 
 export const ADD_ENTITY = 'ADD_ENTITY';
 export function addEntity(id, string) {
@@ -16,7 +14,6 @@ export function addEntity(id, string) {
         string,
     };
 }
-
 
 export const ADD_TRANSLATION = 'ADD_TRANSLATION';
 export function addTranslation(entity, locale, string) {
@@ -28,13 +25,37 @@ export function addTranslation(entity, locale, string) {
     };
 }
 
-
-export const UPDATE_TRANSLATION = 'UPDATE_TRANSLATION';
-export function updateTranslation(entity, locale, string) {
+export const ADD_SUGGESTION = 'ADD_SUGGESTION';
+export function addSuggestion(entity, locale, string) {
     return {
-        type: UPDATE_TRANSLATION,
+        type: ADD_SUGGESTION,
         entity,
         locale,
         string,
+    };
+}
+
+export const UPDATE_SUGGESTION = 'UPDATE_SUGGESTION';
+export function updateSuggestion(id, string) {
+    return {
+        type: UPDATE_SUGGESTION,
+        id,
+        string,
+    };
+}
+
+export function approveSuggestion(suggestion) {
+    return function (dispatch) {
+        dispatch(addTranslation(suggestion.entity, suggestion.locale, suggestion.string));
+        dispatch(rejectSuggestion(suggestion));
+    };
+}
+
+export const REMOVE_SUGGESTION = 'REMOVE_SUGGESTION';
+export function rejectSuggestion(suggestion) {
+    return {
+        type: REMOVE_SUGGESTION,
+        entity: suggestion.entity,
+        locale: suggestion.locale,
     };
 }

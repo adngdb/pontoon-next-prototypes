@@ -2,9 +2,11 @@ import { combineReducers } from 'redux';
 
 import {
     ADD_ENTITY,
+    ADD_SUGGESTION,
     ADD_TRANSLATION,
     SELECT_ENTITY,
-    UPDATE_TRANSLATION,
+    REMOVE_SUGGESTION,
+    UPDATE_SUGGESTION,
 } from './actions';
 
 
@@ -40,19 +42,66 @@ function entities(state = [], action) {
     }
 }
 
+export function getEntitiesWithSuggestion(entities, locale, suggestions) {
+    const suggestionsForLocale = getSuggestionsForLocale(suggestions, locale);
+    const entityIds = suggestionsForLocale.map(o => o.entity);
+    return entities.filter(o => entityIds.indexOf(o.id) >= 0);
+}
+
 
 function translations(state = [], action) {
     switch (action.type) {
         case ADD_TRANSLATION:
+            const translation = state.find(
+                o => o.entity === action.entity && o.locale === action.locale
+            );
+            if (!translation) {
+                return [
+                    ...state,
+                    {
+                        locale: action.locale,
+                        entity: action.entity,
+                        string: action.string,
+                    },
+                ];
+            }
+            else {
+                return state.map((item, i) => {
+                    if (
+                        item.entity === action.entity
+                        && item.locale === action.locale
+                    ) {
+                        return Object.assign({}, item, {
+                            string: action.string,
+                        });
+                    }
+
+                    return item;
+                });
+            }
+        default:
+            return state;
+    }
+}
+
+export function getTranslationsForLocale(translations, locale) {
+    return translations.filter(item => item.locale === locale);
+}
+
+
+function suggestions(state = [], action) {
+    switch (action.type) {
+        case ADD_SUGGESTION:
             return [
                 ...state,
                 {
                     locale: action.locale,
                     entity: action.entity,
                     string: action.string,
-                },
-            ]
-        case UPDATE_TRANSLATION:
+                }
+            ];
+            break;
+        case UPDATE_SUGGESTION:
             return state.map((item, i) => {
                 if (
                     item.entity === action.entity
@@ -64,53 +113,26 @@ function translations(state = [], action) {
                 }
 
                 return item;
-            })
+            });
+        case REMOVE_SUGGESTION:
+            return state.filter(
+                item => !(item.entity === action.entity && item.locale === action.locale)
+            );
         default:
             return state;
     }
 }
 
-export function getTranslationsForLocale(translations, currentLocale) {
-    return translations.filter(item => item.locale === currentLocale);
+export function getSuggestionsForLocale(suggestions, locale) {
+    return suggestions.filter(item => item.locale === locale);
 }
-
-
-// function suggestions(state = [], action) {
-//     switch (action.type) {
-//         case ADD_SUGGESTION:
-//             return [
-//                 ...state,
-//                 {
-//                     locale: action.locale,
-//                     entity: action.entity,
-//                     string: action.string,
-//                 }
-//             ]
-//             break;
-//         case UPDATE_SUGGESTION:
-//             return state.map((item, i) => {
-//                 if (
-//                     item.entity === action.entity
-//                     && item.locale === action.locale
-//                 ) {
-//                     return Object.assign({}, item, {
-//                         string: action.string,
-//                     });
-//                 }
-//
-//                 return item;
-//             })
-//         default:
-//
-//     }
-// }
 
 
 const nextApp = combineReducers({
     status,
     entities,
     translations,
-    // suggestions,
+    suggestions,
 });
 
 export default nextApp;

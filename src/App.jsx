@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 
 import './App.css';
 
@@ -10,8 +10,16 @@ import ReviewPage from './pages/ReviewPage';
 const App = () => {
     return (
         <div className="App">
-            <Route exact path='/' component={TranslatePage} />
-            <Route exact path='/review' component={ReviewPage} />
+            <nav>
+                <ul>
+                    <li><Link to='/'>Translate</Link></li>
+                    <li><Link to='/review'>Review</Link></li>
+                </ul>
+            </nav>
+            <main>
+                <Route exact path='/' component={TranslatePage} />
+                <Route exact path='/review' component={ReviewPage} />
+            </main>
         </div>
     );
 }

@@ -9,6 +9,8 @@ import { createLogger } from 'redux-logger';
 
 import nextApp from './reducers';
 import { addEntity } from './actions';
+import { getUID } from './utils';
+
 import App from './App';
 
 
@@ -19,37 +21,44 @@ const createStoreWithMiddleware = applyMiddleware(
     loggerMiddleware
 )(createStore);
 
+const e1 = getUID();
+const e2 = getUID();
+
 const store = createStoreWithMiddleware(nextApp, {
     status: {
         currentLocale: 'fr',
     },
     entities: [
         {
-            id: 1,
+            id: e1,
             string: 'hello',
         },
         {
-            id: 2,
+            id: e2,
             string: 'world',
+        },
+        {
+            id: getUID(),
+            string: 'what is up?',
         },
     ],
     translations: [
         {
-            entity: 1,
+            entity: e1,
             locale: 'fr',
             string: 'bonjour',
         },
     ],
-    // suggestions: [
-    //     {
-    //         locale: 'fr',
-    //         entity: 2,
-    //         string: 'le monde',
-    //         comments: [
-    //             'I think this lacks consistency with the rest of the content...',
-    //         ],
-    //     }
-    // ],
+    suggestions: [
+        {
+            locale: 'fr',
+            entity: e2,
+            string: 'le monde',
+            comments: [
+                'I think this lacks consistency with the rest of the content...',
+            ],
+        }
+    ],
 });
 
 const root = document.getElementById('root');

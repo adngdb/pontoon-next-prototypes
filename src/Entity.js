@@ -3,7 +3,7 @@ import React from 'react';
 
 const Entity = ({ entity }) => {
     if (!entity) {
-        return <p></p>;
+        return <span></span>;
     }
     return (
         <span>{ entity.string }</span>

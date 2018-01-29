@@ -1,7 +1,18 @@
-.App > div {
+.App > main > div {
     display: grid;
     grid-template-columns: 40% 60%;
     padding: 20px;
+}
+.App > nav ul {
+    list-style: none;
+}
+.App > nav ul li {
+    display: inline;
+}
+.App > nav ul li a {
+    font-weight: bold;
+    padding: 20px;
+    text-transform: uppercase;
 }
 
 .EntitiesList {
