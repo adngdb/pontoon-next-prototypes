@@ -36,10 +36,11 @@ export function addSuggestion(entity, locale, string) {
 }
 
 export const UPDATE_SUGGESTION = 'UPDATE_SUGGESTION';
-export function updateSuggestion(id, string) {
+export function updateSuggestion(entity, locale, string) {
     return {
         type: UPDATE_SUGGESTION,
-        id,
+        entity,
+        locale,
         string,
     };
 }
@@ -57,5 +58,15 @@ export function rejectSuggestion(suggestion) {
         type: REMOVE_SUGGESTION,
         entity: suggestion.entity,
         locale: suggestion.locale,
+    };
+}
+
+export const ADD_COMMENT = 'ADD_COMMENT';
+export function addComment(entity, locale, comment) {
+    return {
+        type: ADD_COMMENT,
+        entity,
+        locale,
+        comment,
     };
 }

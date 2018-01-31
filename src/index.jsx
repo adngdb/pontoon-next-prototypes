@@ -31,31 +31,46 @@ const store = createStoreWithMiddleware(nextApp, {
     entities: [
         {
             id: e1,
-            string: 'hello',
+            string: 'And on the pedestal these words appear:',
         },
         {
             id: e2,
-            string: 'world',
+            string: "'My name is Ozymandias, king of kings;",
         },
         {
             id: getUID(),
-            string: 'what is up?',
+            string: "Look on my works, ye Mighty, and despair!'",
+        },
+        {
+            id: getUID(),
+            string: "Nothing beside remains. Round the decay",
+        },
+        {
+            id: getUID(),
+            string: "Of that colossal wreck, boundless and bare",
+        },
+        {
+            id: getUID(),
+            string: "The lone and level sands stretch far away.",
         },
     ],
     translations: [
         {
             entity: e1,
             locale: 'fr',
-            string: 'bonjour',
+            string: 'Et sur le piédestal il y a ces mots :',
         },
     ],
     suggestions: [
         {
             locale: 'fr',
             entity: e2,
-            string: 'le monde',
+            string: '"Mon nom est Ozymandias, Roi des Rios.',
             comments: [
-                'I think this lacks consistency with the rest of the content...',
+                {
+                    comment: 'There\'s a typo, "Rois" instead of "Rios". Otherwise, looks good!',
+                    created_at: new Date(),
+                },
             ],
         }
     ],

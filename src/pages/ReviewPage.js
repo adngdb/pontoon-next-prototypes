@@ -1,14 +1,32 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { approveSuggestion, rejectSuggestion, selectEntity } from '../actions';
+import { addComment, approveSuggestion, rejectSuggestion, selectEntity } from '../actions';
 import { getEntitiesWithSuggestion, getSuggestionsForLocale } from '../reducers';
 
+import CommentForm from '../CommentForm';
+import CommentsList from '../CommentsList';
 import EntitiesList from '../EntitiesList';
 import ReviewForm from '../ReviewForm';
 
 
 class ReviewPage extends Component {
+    addComment(comment) {
+        const currentSuggestion = this.props.suggestions.find(
+            o => o.entity === this.props.status.selectedEntity
+        );
+
+        if (!currentSuggestion) {
+            return;
+        }
+
+        this.props.dispatch(addComment(
+            currentSuggestion.entity,
+            currentSuggestion.locale,
+            comment
+        ));
+    }
+
     openSuggestion(entity) {
         this.props.dispatch(selectEntity(entity));
     }
@@ -21,29 +39,48 @@ class ReviewPage extends Component {
         this.props.dispatch(rejectSuggestion(suggestion));
     }
 
-    render() {
-        const currentEntity = this.props.entities.find(
-            o => o.id === this.props.status.selectedEntity
-        );
-
+    renderReviewForm() {
         const currentSuggestion = this.props.suggestions.find(
             o => o.entity === this.props.status.selectedEntity
         );
 
-        let reviewForm = null;
-        if (currentSuggestion) {
-            reviewForm = <ReviewForm
-                entity={ currentEntity }
-                suggestion={ currentSuggestion }
-                approveSuggestion={ this.approveSuggestion.bind(this) }
-                rejectSuggestion={ this.rejectSuggestion.bind(this) }
-            />;
+        if (!currentSuggestion) {
+            return null;
         }
 
+        const currentEntity = this.props.entities.find(
+            o => o.id === this.props.status.selectedEntity
+        );
+
+        return <ReviewForm
+            entity={ currentEntity }
+            suggestion={ currentSuggestion }
+            approveSuggestion={ this.approveSuggestion.bind(this) }
+            rejectSuggestion={ this.rejectSuggestion.bind(this) }
+        />;
+    }
+
+    renderComments() {
+        const currentSuggestion = this.props.suggestions.find(
+            o => o.entity === this.props.status.selectedEntity
+        );
+
+        if (!currentSuggestion) {
+            return null;
+        }
+
+        return (<section>
+            <h3>Comments</h3>
+            <CommentsList comments={ currentSuggestion.comments } />
+            <CommentForm addComment={ this.addComment.bind(this) } />
+        </section>);
+    }
+
+    render() {
         return (
             <div>
                 <section>
-                    <h2>All strings</h2>
+                    <h2>Pending suggestions</h2>
                     <EntitiesList
                         entities={ this.props.entities }
                         translations={ this.props.suggestions }
@@ -52,7 +89,8 @@ class ReviewPage extends Component {
                 </section>
                 <section>
                     <h2>Review</h2>
-                    { reviewForm }
+                    { this.renderReviewForm() }
+                    { this.renderComments() }
                 </section>
             </div>
         );

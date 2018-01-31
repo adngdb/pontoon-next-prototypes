@@ -21,6 +21,8 @@ class TranslatePage extends Component {
             o => o.entity === entity && o.locale === locale
         );
 
+        console.log(string);
+
         if (suggestion) {
             this.props.dispatch(updateSuggestion(entity, locale, string));
         }

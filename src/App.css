@@ -3,6 +3,9 @@
     grid-template-columns: 40% 60%;
     padding: 20px;
 }
+.App > nav {
+    text-align: center;
+}
 .App > nav ul {
     list-style: none;
 }
@@ -20,14 +23,14 @@
     padding: 0;
 }
 .EntitiesList li {
-    padding: 20px 10px;
+    padding: 10px 0;
     cursor: pointer;
+    text-overflow: ellipsis;
 }
 .EntitiesList .translation {
     color: darkgray;
     font-size: 0.9rem;
     font-style: italic;
-    margin-left: 1rem;
 }
 
 .Editor {
@@ -35,6 +38,32 @@
     width: 80%;
 }
 
-.original {
+.ReviewForm .label {
     color: darkgray;
+    font-style: italic;
+}
+
+.CommentsList {
+    list-style: none;
+    padding: 0;
+    width: 80%;
+}
+.CommentsList li {
+    border: 1px solid darkgray;
+    border-radius: 2px;
+    padding: 0 20px;
+    margin: 10px 0;
+}
+.CommentsList li img {
+    max-width: 32px;
+    margin-right: 10px;
+}
+.CommentsList li time {
+    color: darkgray;
+    font-style: italic;
+}
+
+.CommentForm textarea {
+    height: 100px;
+    width: 80%;
 }

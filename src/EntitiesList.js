@@ -10,8 +10,8 @@ const EntitiesList = ({ entities, translations, onItemClick }) => {
         }
         return (
             <li onClick={() => onItemClick(entity.id)} key={i}>
-                { entity.string }
-                { translationElt }
+                <p>{ entity.string }</p>
+                <p>{ translationElt }</p>
             </li>
         );
     });
