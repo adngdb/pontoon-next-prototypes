@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import './App.css';
 
@@ -12,13 +12,17 @@ const App = () => {
         <div className="App">
             <nav>
                 <ul>
-                    <li><Link to='/'>Translate</Link></li>
+                    <li><Link to='/translate'>Translate</Link></li>
                     <li><Link to='/review'>Review</Link></li>
                 </ul>
             </nav>
             <main>
-                <Route exact path='/' component={TranslatePage} />
-                <Route exact path='/review' component={ReviewPage} />
+                <Switch>
+                    <Route path='/review/:entityId' component={ReviewPage} />
+                    <Route exact path='/review' component={ReviewPage} />
+                    <Route path='/translate/:entityId' component={TranslatePage} />
+                    <Route exact path='/translate' component={TranslatePage} />
+                </Switch>
             </main>
         </div>
     );

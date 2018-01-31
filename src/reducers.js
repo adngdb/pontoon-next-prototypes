@@ -5,23 +5,17 @@ import {
     ADD_ENTITY,
     ADD_SUGGESTION,
     ADD_TRANSLATION,
-    SELECT_ENTITY,
     REMOVE_SUGGESTION,
     UPDATE_SUGGESTION,
 } from './actions';
 
 
 const initialStatus = {
-    selectedEntity: null,
     currentLocale: 'fr',
     lastEntityId: 0,
 }
 function status(state = initialStatus, action) {
     switch (action.type) {
-        case SELECT_ENTITY:
-            return Object.assign({}, state, {
-                selectedEntity: action.entity,
-            });
         default:
             return state;
     }

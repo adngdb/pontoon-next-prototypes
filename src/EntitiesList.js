@@ -1,7 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 
-const EntitiesList = ({ entities, translations, onItemClick }) => {
+const EntitiesList = ({ entities, translations, path }) => {
+    if (path === '/') {
+        path = '';
+    }
+
     let results = entities.map((entity, i) => {
         const translation = translations.find(o => o.entity === entity.id);
         let translationElt = null;
@@ -9,9 +14,17 @@ const EntitiesList = ({ entities, translations, onItemClick }) => {
             translationElt = <span className='translation'>{ translation.string }</span>;
         }
         return (
-            <li onClick={() => onItemClick(entity.id)} key={i}>
-                <p>{ entity.string }</p>
-                <p>{ translationElt }</p>
+            <li key={i}>
+                <p>
+                    <Link to={ `${path}/${entity.id}` }>
+                        { entity.string }
+                    </Link>
+                </p>
+                <p>
+                    <Link to={ `${path}/${entity.id}` }>
+                        { translationElt }
+                    </Link>
+                </p>
             </li>
         );
     });

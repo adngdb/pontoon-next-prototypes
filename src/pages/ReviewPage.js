@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { addComment, approveSuggestion, rejectSuggestion, selectEntity } from '../actions';
+import { addComment, approveSuggestion, rejectSuggestion } from '../actions';
 import { getEntitiesWithSuggestion, getSuggestionsForLocale } from '../reducers';
 
 import CommentForm from '../CommentForm';
@@ -12,8 +12,9 @@ import ReviewForm from '../ReviewForm';
 
 class ReviewPage extends Component {
     addComment(comment) {
+        const entityId = parseInt(this.props.match.params.entityId);
         const currentSuggestion = this.props.suggestions.find(
-            o => o.entity === this.props.status.selectedEntity
+            o => o.entity === entityId
         );
 
         if (!currentSuggestion) {
@@ -27,10 +28,6 @@ class ReviewPage extends Component {
         ));
     }
 
-    openSuggestion(entity) {
-        this.props.dispatch(selectEntity(entity));
-    }
-
     approveSuggestion(suggestion) {
         this.props.dispatch(approveSuggestion(suggestion));
     }
@@ -40,8 +37,10 @@ class ReviewPage extends Component {
     }
 
     renderReviewForm() {
+        const entityId = parseInt(this.props.match.params.entityId);
+
         const currentSuggestion = this.props.suggestions.find(
-            o => o.entity === this.props.status.selectedEntity
+            o => o.entity === entityId
         );
 
         if (!currentSuggestion) {
@@ -49,7 +48,7 @@ class ReviewPage extends Component {
         }
 
         const currentEntity = this.props.entities.find(
-            o => o.id === this.props.status.selectedEntity
+            o => o.id === entityId
         );
 
         return <ReviewForm
@@ -61,8 +60,9 @@ class ReviewPage extends Component {
     }
 
     renderComments() {
+        const entityId = parseInt(this.props.match.params.entityId);
         const currentSuggestion = this.props.suggestions.find(
-            o => o.entity === this.props.status.selectedEntity
+            o => o.entity === entityId
         );
 
         if (!currentSuggestion) {
@@ -84,7 +84,7 @@ class ReviewPage extends Component {
                     <EntitiesList
                         entities={ this.props.entities }
                         translations={ this.props.suggestions }
-                        onItemClick={ this.openSuggestion.bind(this) }
+                        path='/review'
                     ></EntitiesList>
                 </section>
                 <section>

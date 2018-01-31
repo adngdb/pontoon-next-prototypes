@@ -1,11 +1,3 @@
-export const SELECT_ENTITY = 'SELECT_ENTITY';
-export function selectEntity(entity) {
-    return {
-        type: SELECT_ENTITY,
-        entity,
-    };
-}
-
 export const ADD_ENTITY = 'ADD_ENTITY';
 export function addEntity(id, string) {
     return {

@@ -1,6 +1,6 @@
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
@@ -80,9 +80,9 @@ const root = document.getElementById('root');
 const load = () => render((
     <AppContainer>
         <Provider store={ store }>
-            <BrowserRouter>
+            <HashRouter>
                 <App />
-            </BrowserRouter>
+            </HashRouter>
         </Provider>
     </AppContainer>
 ), root);
