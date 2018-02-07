@@ -5,17 +5,24 @@ import {
     ADD_ENTITY,
     ADD_SUGGESTION,
     ADD_TRANSLATION,
+    CREATE_BRANCH,
+    DELETE_BRANCH,
     REMOVE_SUGGESTION,
+    SELECT_BRANCH,
     UPDATE_SUGGESTION,
 } from './actions';
 
 
 const initialStatus = {
     currentLocale: 'fr',
-    lastEntityId: 0,
+    currentBranch: null,
 }
 function status(state = initialStatus, action) {
     switch (action.type) {
+        case SELECT_BRANCH:
+            return Object.assign({}, state, {
+                currentBranch: action.branchId,
+            });
         default:
             return state;
     }
@@ -130,7 +137,7 @@ function suggestions(state = [], action) {
                 item => !(item.entity === action.entity && item.locale === action.locale)
             );
         case ADD_COMMENT:
-            return state.map((item, i) => {
+            return state.map((item) => {
                 if (
                     item.entity === action.entity
                     && item.locale === action.locale
@@ -151,12 +158,52 @@ export function getSuggestionsForLocale(suggestions, locale) {
     return suggestions.filter(item => item.locale === locale);
 }
 
+function branches(state = [], action) {
+    switch (action.type) {
+        case CREATE_BRANCH:
+            return [
+                ...state,
+                {
+                    id: action.id,
+                    name: action.name,
+                    suggestions: [],
+                },
+            ];
+        case DELETE_BRANCH:
+            return state.filter(
+                o => o.id !== action.id
+            );
+        case ADD_SUGGESTION:
+        case UPDATE_SUGGESTION:
+        case REMOVE_SUGGESTION:
+        case ADD_COMMENT:
+            return state.map(item => {
+                if (item.id === action.branch) {
+                    return Object.assign({}, item, {
+                        suggestions: suggestions(item.suggestions, action),
+                    });
+                }
+                return item;
+            })
+        default:
+            return state;
+    }
+}
+
+export function getSuggestionsForBranch(branches, branchId) {
+    const branch = branches.find(o => o.id === branchId);
+    if (branch) {
+        return branch.suggestions;
+    }
+    return [];
+}
+
 
 const nextApp = combineReducers({
     status,
     entities,
     translations,
-    suggestions,
+    branches,
 });
 
 export default nextApp;

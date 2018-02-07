@@ -61,16 +61,22 @@ const store = createStoreWithMiddleware(nextApp, {
             string: 'Et sur le piédestal il y a ces mots :',
         },
     ],
-    suggestions: [
+    branches: [
         {
-            locale: 'fr',
-            entity: e2,
-            string: '"Mon nom est Ozymandias, Roi des Rios.',
-            comments: [
+            id: getUID(),
+            name: 'test branch',
+            suggestions: [
                 {
-                    comment: 'There\'s a typo, "Rois" instead of "Rios". Otherwise, looks good!',
-                    created_at: new Date(),
-                },
+                    locale: 'fr',
+                    entity: e2,
+                    string: '"Mon nom est Ozymandias, Roi des Rios.',
+                    comments: [
+                        {
+                            comment: 'There\'s a typo, "Rois" instead of "Rios". Otherwise, looks good!',
+                            created_at: new Date(),
+                        },
+                    ],
+                }
             ],
         }
     ],

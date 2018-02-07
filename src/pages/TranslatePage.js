@@ -2,66 +2,110 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
-import { addSuggestion, updateSuggestion } from '../actions';
-import { getTranslationsForLocale, getSuggestionsForLocale } from '../reducers';
+import {
+    addSuggestion,
+    createBranch,
+    selectBranch,
+    updateSuggestion,
+} from '../actions';
+import { getTranslationsForLocale, getSuggestionsForBranch } from '../reducers';
 import { getUID } from '../utils';
 import EntitiesList from '../EntitiesList';
 import TranslationForm from '../TranslationForm';
+import SaveButton from '../SaveButton';
+import BranchSelector from '../BranchSelector';
 
 
 class TranslatePage extends Component {
-    openEditor(entityId) {
-        this.props.dispatch(selectEntity(entityId));
+    get entityId() {
+        return parseInt(this.props.match.params.entityId);
     }
 
-    saveSuggestion(string) {
-        const entityId = parseInt(this.props.match.params.entityId);
-        const locale = this.props.status.currentLocale;
-
-        const suggestion = this.props.suggestions.find(
-            o => o.entity === entityId && o.locale === locale
+    get currentEntity() {
+        return this.props.entities.find(
+            o => o.id === this.entityId
         );
-
-        if (suggestion) {
-            this.props.dispatch(updateSuggestion(entityId, locale, string));
-        }
-        else {
-            this.props.dispatch(addSuggestion(entityId, locale, string));
-        }
     }
 
-    renderTranslationForm() {
-        const entityId = parseInt(this.props.match.params.entityId);
-
-        const currentEntity = this.props.entities.find(
-            o => o.id === entityId
-        );
-
-        const currentTranslation = this.props.suggestions.find(
-            o => o.entity === entityId
+    get currentTranslation() {
+        return this.props.suggestions.find(
+            o => o.entity === this.entityId
         ) || this.props.translations.find(
-            o => o.entity === entityId
+            o => o.entity === this.entityId
         ) || {
-            entity: entityId,
+            entity: this.entityId,
             locale: this.props.status.currentLocale,
             string: '',
         };
+    }
+
+    get hasExistingSuggestion() {
+        return !!this.props.suggestions.find(o => o.entity === this.entityId);
+    }
+
+    createBranch = () => {
+        const uid = getUID();
+        this.props.dispatch(createBranch(uid, `branch ${uid}`));
+        this.props.dispatch(selectBranch(uid));
+    }
+
+    selectBranch = (branchId) => {
+        this.props.dispatch(selectBranch(branchId));
+    }
+
+    saveSuggestion = (string) => {
+        const locale = this.props.status.currentLocale;
+        const branch = this.props.status.currentBranch;
+
+        const suggestion = this.props.suggestions.find(
+            o => o.entity === this.entityId && o.locale === locale
+        );
+
+        if (suggestion) {
+            this.props.dispatch(updateSuggestion(this.entityId, locale, branch, string));
+        }
+        else {
+            this.props.dispatch(addSuggestion(this.entityId, locale, branch, string));
+        }
+    }
+
+    renderTranslationForm = () => {
+        const renderActionButton = (saveTranslation) => <SaveButton
+            saveTranslation={ saveTranslation }
+            createBranch={ this.createBranch }
+            currentBranch={ this.props.status.currentBranch }
+            hasExistingSuggestion={ this.hasExistingSuggestion }
+        />;
 
         return (<TranslationForm
-            entity={ currentEntity }
-            translation={ currentTranslation }
-            saveTranslation={ this.saveSuggestion.bind(this) }
+            entity={ this.currentEntity }
+            translation={ this.currentTranslation }
+            saveTranslation={ this.saveSuggestion }
+            renderActionButton={ renderActionButton }
         />);
     }
 
     render() {
+        const { branches, entities, translations, suggestions, status } = this.props;
+
         return (
             <div>
+                <header>
+                    Change branch:{' '}
+                    <BranchSelector
+                        branches={ branches }
+                        currentBranch={ status.currentBranch }
+                        selectBranch={ this.selectBranch }
+                    />
+                    {' or '}
+                    <button onClick={ this.createBranch }>Create Branch</button>
+                </header>
                 <section>
                     <h2>All strings</h2>
                     <EntitiesList
-                        entities={ this.props.entities }
-                        translations={ this.props.translations }
+                        entities={ entities }
+                        translations={ translations }
+                        suggestions={ suggestions }
                         path='/translate'
                     ></EntitiesList>
                 </section>
@@ -69,7 +113,7 @@ class TranslatePage extends Component {
                     <h2>Translate</h2>
                     <Route
                         path='/translate/:entityId'
-                        render={ () => this.renderTranslationForm() }
+                        render={ this.renderTranslationForm }
                     />
                 </section>
             </div>
@@ -82,7 +126,8 @@ const mapStateToProps = state => {
         status: state.status,
         entities: state.entities,
         translations: getTranslationsForLocale(state.translations, state.status.currentLocale),
-        suggestions: getSuggestionsForLocale(state.suggestions, state.status.currentLocale),
+        branches: state.branches,
+        suggestions: getSuggestionsForBranch(state.branches, state.status.currentBranch),
     };
 };
 

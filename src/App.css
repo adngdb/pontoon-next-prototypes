@@ -1,7 +1,16 @@
+button {
+    cursor: pointer;
+}
+
 .App > main > div {
     display: grid;
     grid-template-columns: 40% 60%;
     padding: 20px;
+}
+.App > main > div > header {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    text-align: right;
 }
 .App > nav {
     text-align: center;
@@ -22,6 +31,16 @@
     list-style-type: none;
     padding: 0;
 }
+.EntitiesList li {
+    border-left: .5em solid gray;
+    margin-bottom: 1px;
+}
+.EntitiesList li.approved {
+    border-color: green;
+}
+.EntitiesList li.suggested {
+    border-color: blue;
+}
 .EntitiesList li p {
     padding: 0;
     margin: 0;
@@ -29,14 +48,15 @@
 .EntitiesList li a {
     display: inline-block;
     color: black;
+    padding-left: 1em;
     text-decoration: none;
     width: 100%;
 }
 .EntitiesList li p:first-of-type a {
-    padding: 20px 0 0 0;
+    padding: 20px 0 0 .6em;
 }
 .EntitiesList li p:last-of-type a {
-    padding: 10px 0 20px 0;
+    padding: 10px 0 20px .6em;
 }
 .EntitiesList .translation {
     color: darkgray;

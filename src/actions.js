@@ -18,21 +18,23 @@ export function addTranslation(entity, locale, string) {
 }
 
 export const ADD_SUGGESTION = 'ADD_SUGGESTION';
-export function addSuggestion(entity, locale, string) {
+export function addSuggestion(entity, locale, branch, string) {
     return {
         type: ADD_SUGGESTION,
         entity,
         locale,
+        branch,
         string,
     };
 }
 
 export const UPDATE_SUGGESTION = 'UPDATE_SUGGESTION';
-export function updateSuggestion(entity, locale, string) {
+export function updateSuggestion(entity, locale, branch, string) {
     return {
         type: UPDATE_SUGGESTION,
         entity,
         locale,
+        branch,
         string,
     };
 }
@@ -60,5 +62,30 @@ export function addComment(entity, locale, comment) {
         entity,
         locale,
         comment,
+    };
+}
+
+export const CREATE_BRANCH = 'CREATE_BRANCH';
+export function createBranch(id, name) {
+    return {
+        type: CREATE_BRANCH,
+        id,
+        name,
+    };
+}
+
+export const DELETE_BRANCH = 'DELETE_BRANCH';
+export function deleteBranch(id) {
+    return {
+        type: DELETE_BRANCH,
+        id,
+    };
+}
+
+export const SELECT_BRANCH = 'SELECT_BRANCH';
+export function selectBranch(branchId) {
+    return {
+        type: SELECT_BRANCH,
+        branchId,
     };
 }

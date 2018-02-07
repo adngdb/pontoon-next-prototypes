@@ -36,17 +36,18 @@ export default class TranslationForm extends Component {
         });
     }
 
-    saveTranslation = (event) => {
-        event.preventDefault();
+    saveTranslation = () => {
         this.props.saveTranslation(this.state.translation);
     }
 
     render() {
+        const { renderActionButton, entity } = this.props;
+
         return (
             <form>
                 <p>
                     <span className='original'>Original: </span>
-                    <Entity entity={ this.props.entity } />
+                    <Entity entity={ entity } />
                 </p>
                 <p>
                     <Editor
@@ -55,7 +56,7 @@ export default class TranslationForm extends Component {
                     />
                 </p>
                 <p>
-                    <button onClick={ this.saveTranslation }>Suggest</button>
+                    { renderActionButton(this.saveTranslation) }
                 </p>
             </form>
         );

@@ -2,19 +2,30 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 
-const EntitiesList = ({ entities, translations, path }) => {
-    if (path === '/') {
-        path = '';
-    }
+export default class EntitiesList extends React.Component {
+    renderEntity(entity, index) {
+        const { translations, suggestions, path } = this.props;
+        if (path === '/') {
+            path = '';
+        }
 
-    let results = entities.map((entity, i) => {
-        const translation = translations.find(o => o.entity === entity.id);
         let translationElt = null;
+        let className = '';
+
+        const translation = translations.find(o => o.entity === entity.id);
         if (translation) {
             translationElt = <span className='translation'>{ translation.string }</span>;
+            className = 'approved';
         }
+
+        const suggestion = suggestions.find(o => o.entity === entity.id);
+        if (suggestion) {
+            translationElt = <span className='translation'>{ suggestion.string }</span>;
+            className = 'suggested';
+        }
+
         return (
-            <li key={i}>
+            <li key={ index } className={ className }>
                 <p>
                     <Link to={ `${path}/${entity.id}` }>
                         { entity.string }
@@ -27,12 +38,15 @@ const EntitiesList = ({ entities, translations, path }) => {
                 </p>
             </li>
         );
-    });
-    return (
-        <ul className='EntitiesList'>
-            {results}
-        </ul>
-    );
-}
+    }
 
-export default EntitiesList;
+    render() {
+        const { entities } = this.props;
+
+        return (
+            <ul className='EntitiesList'>
+                { entities.map((entity, i) => this.renderEntity(entity, i)) }
+            </ul>
+        );
+    }
+}
