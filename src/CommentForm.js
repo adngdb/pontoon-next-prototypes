@@ -6,7 +6,7 @@ export default class CommentForm extends Component {
         comment: '',
     }
 
-    updateComment(event) {
+    updateComment = (event) => {
         const target = event.target;
 
         this.setState({
@@ -14,7 +14,7 @@ export default class CommentForm extends Component {
         });
     }
 
-    addComment(event) {
+    addComment = (event) => {
         event.preventDefault();
         this.props.addComment(this.state.comment);
         this.setState({
@@ -28,13 +28,13 @@ export default class CommentForm extends Component {
                 <p>
                     <textarea
                         name='comment'
-                        onChange={ this.updateComment.bind(this) }
+                        onChange={ this.updateComment }
                         value={ this.state.comment }
                         placeholder='Add a comment'
                     />
                 </p>
                 <p>
-                    <button onClick={ this.addComment.bind(this) }>Comment</button>
+                    <button onClick={ this.addComment }>Comment</button>
                 </p>
             </form>
         );

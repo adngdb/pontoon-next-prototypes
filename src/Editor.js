@@ -7,7 +7,7 @@ export default class Editor extends Component {
             <textarea
                 className='Editor'
                 name='content'
-                onChange={ this.props.updateTranslation.bind(this) }
+                onChange={ this.props.updateTranslation }
                 value={ this.props.translation }
             />
         );

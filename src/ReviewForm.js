@@ -4,12 +4,12 @@ import Entity from './Entity';
 
 
 export default class ReviewForm extends Component {
-    approveSuggestion(event) {
+    approveSuggestion = (event) => {
         event.preventDefault();
         this.props.approveSuggestion(this.props.suggestion);
     }
 
-    rejectSuggestion(event) {
+    rejectSuggestion = (event) => {
         event.preventDefault();
         this.props.rejectSuggestion(this.props.suggestion);
     }
@@ -26,8 +26,8 @@ export default class ReviewForm extends Component {
                     { this.props.suggestion ? this.props.suggestion.string : '' }
                 </p>
                 <p>
-                    <button onClick={ this.approveSuggestion.bind(this) }>Approve</button>
-                    <button onClick={ this.rejectSuggestion.bind(this) }>Reject</button>
+                    <button onClick={ this.approveSuggestion }>Approve</button>
+                    <button onClick={ this.rejectSuggestion }>Reject</button>
                 </p>
             </form>
         );

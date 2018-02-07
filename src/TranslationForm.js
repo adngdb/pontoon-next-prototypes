@@ -28,7 +28,7 @@ export default class TranslationForm extends Component {
         });
     }
 
-    updateTranslation(event) {
+    updateTranslation = (event) => {
         const target = event.target;
 
         this.setState({
@@ -36,7 +36,7 @@ export default class TranslationForm extends Component {
         });
     }
 
-    saveTranslation(event) {
+    saveTranslation = (event) => {
         event.preventDefault();
         this.props.saveTranslation(this.state.translation);
     }
@@ -51,11 +51,11 @@ export default class TranslationForm extends Component {
                 <p>
                     <Editor
                         translation={ this.state.translation }
-                        updateTranslation={ this.updateTranslation.bind(this) }
+                        updateTranslation={ this.updateTranslation }
                     />
                 </p>
                 <p>
-                    <button onClick={ this.saveTranslation.bind(this) }>Suggest</button>
+                    <button onClick={ this.saveTranslation }>Suggest</button>
                 </p>
             </form>
         );
