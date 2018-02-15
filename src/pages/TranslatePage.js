@@ -6,14 +6,19 @@ import {
     addSuggestion,
     createBranch,
     selectBranch,
+    sendBranchForReview,
     updateSuggestion,
 } from '../actions';
-import { getTranslationsForLocale, getSuggestionsForBranch } from '../reducers';
+import {
+    getTranslationsForLocale,
+    getSuggestionsForBranch,
+    getWorkingBranches,
+} from '../reducers';
 import { getUID } from '../utils';
 import EntitiesList from '../EntitiesList';
 import TranslationForm from '../TranslationForm';
 import SaveButton from '../SaveButton';
-import BranchSelector from '../BranchSelector';
+import BranchWidget from '../BranchWidget';
 
 
 class TranslatePage extends Component {
@@ -43,6 +48,10 @@ class TranslatePage extends Component {
         return !!this.props.suggestions.find(o => o.entity === this.entityId);
     }
 
+    componentWillUnmount() {
+        this.props.dispatch(selectBranch(undefined));
+    }
+
     createBranch = () => {
         const uid = getUID();
         this.props.dispatch(createBranch(uid, `branch ${uid}`));
@@ -69,6 +78,10 @@ class TranslatePage extends Component {
         }
     }
 
+    sendBranchForReview = (event) => {
+        this.props.dispatch(sendBranchForReview(this.props.status.currentBranch));
+    }
+
     renderTranslationForm = () => {
         const renderActionButton = (saveTranslation) => <SaveButton
             saveTranslation={ saveTranslation }
@@ -89,18 +102,17 @@ class TranslatePage extends Component {
         const { branches, entities, translations, suggestions, status } = this.props;
 
         return (
-            <div>
-                <header>
-                    Change branch:{' '}
-                    <BranchSelector
+            <div className='Translate'>
+                <header className='pure-u-1'>
+                    <BranchWidget
                         branches={ branches }
                         currentBranch={ status.currentBranch }
                         selectBranch={ this.selectBranch }
+                        createBranch={ this.createBranch }
+                        sendBranchForReview={ this.sendBranchForReview }
                     />
-                    {' or '}
-                    <button onClick={ this.createBranch }>Create Branch</button>
                 </header>
-                <section>
+                <section className='pure-u-2-5'>
                     <h2>All strings</h2>
                     <EntitiesList
                         entities={ entities }
@@ -109,7 +121,7 @@ class TranslatePage extends Component {
                         path='/translate'
                     ></EntitiesList>
                 </section>
-                <section>
+                <section className='pure-u-3-5'>
                     <h2>Translate</h2>
                     <Route
                         path='/translate/:entityId'
@@ -126,7 +138,7 @@ const mapStateToProps = state => {
         status: state.status,
         entities: state.entities,
         translations: getTranslationsForLocale(state.translations, state.status.currentLocale),
-        branches: state.branches,
+        branches: getWorkingBranches(state.branches),
         suggestions: getSuggestionsForBranch(state.branches, state.status.currentBranch),
     };
 };

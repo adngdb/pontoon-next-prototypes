@@ -1,12 +1,15 @@
 import { combineReducers } from 'redux';
 
 import {
-    ADD_COMMENT,
+    ADD_TRANSLATION_COMMENT,
+    ADD_BRANCH_COMMENT,
     ADD_ENTITY,
     ADD_SUGGESTION,
     ADD_TRANSLATION,
+    CLOSE_BRANCH,
     CREATE_BRANCH,
-    DELETE_BRANCH,
+    MARK_BRANCH_AS_MERGED,
+    OPEN_BRANCH,
     REMOVE_SUGGESTION,
     SELECT_BRANCH,
     UPDATE_SUGGESTION,
@@ -93,12 +96,15 @@ export function getTranslationsForLocale(translations, locale) {
 
 function comments(state=[], action) {
     switch (action.type) {
-        case ADD_COMMENT:
+        case ADD_TRANSLATION_COMMENT:
+        case ADD_BRANCH_COMMENT:
             return [
                 ...state,
                 {
                     comment: action.comment,
                     created_at: new Date(),
+                    user: 'UnknownUser',
+                    avatar: 'http://www.auriflama.sp.gov.br/app/webroot/img/avatar-user.png',
                 },
             ];
         default:
@@ -136,7 +142,7 @@ function suggestions(state = [], action) {
             return state.filter(
                 item => !(item.entity === action.entity && item.locale === action.locale)
             );
-        case ADD_COMMENT:
+        case ADD_TRANSLATION_COMMENT:
             return state.map((item) => {
                 if (
                     item.entity === action.entity
@@ -166,17 +172,54 @@ function branches(state = [], action) {
                 {
                     id: action.id,
                     name: action.name,
+                    user: 'UnknownUser',
+                    avatar: 'http://www.auriflama.sp.gov.br/app/webroot/img/avatar-user.png',
+                    merged: false,
+                    open: false,
                     suggestions: [],
+                    comments: [],
                 },
             ];
-        case DELETE_BRANCH:
-            return state.filter(
-                o => o.id !== action.id
-            );
+        case OPEN_BRANCH:
+            return state.map(item => {
+                if (item.id === action.id) {
+                    return Object.assign({}, item, {
+                        open: true,
+                    });
+                }
+                return item;
+            });
+        case CLOSE_BRANCH:
+            return state.map(item => {
+                if (item.id === action.id) {
+                    return Object.assign({}, item, {
+                        open: false,
+                    });
+                }
+                return item;
+            });
+        case MARK_BRANCH_AS_MERGED:
+            return state.map(item => {
+                if (item.id === action.id) {
+                    return Object.assign({}, item, {
+                        merged: true,
+                    });
+                }
+                return item;
+            });
+        case ADD_BRANCH_COMMENT:
+            return state.map(item => {
+                if (item.id === action.branch) {
+                    return Object.assign({}, item, {
+                        comments: comments(item.comments, action),
+                    });
+                }
+                return item;
+            });
         case ADD_SUGGESTION:
         case UPDATE_SUGGESTION:
         case REMOVE_SUGGESTION:
-        case ADD_COMMENT:
+        case ADD_TRANSLATION_COMMENT:
             return state.map(item => {
                 if (item.id === action.branch) {
                     return Object.assign({}, item, {
@@ -184,10 +227,18 @@ function branches(state = [], action) {
                     });
                 }
                 return item;
-            })
+            });
         default:
             return state;
     }
+}
+
+export function getBranchesToReview(branches) {
+    return branches.filter(o => o.open);
+}
+
+export function getWorkingBranches(branches) {
+    return branches.filter(o => !o.merged);
 }
 
 export function getSuggestionsForBranch(branches, branchId) {

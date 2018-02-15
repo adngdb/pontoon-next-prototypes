@@ -1,30 +1,60 @@
-button {
-    cursor: pointer;
+.info {
+    font-style: italic;
 }
 
-.App > main > div {
-    display: grid;
-    grid-template-columns: 40% 60%;
-    padding: 20px;
+.App {
+    padding: 0 20px;
 }
-.App > main > div > header {
-    grid-column-start: 1;
-    grid-column-end: 3;
+
+.Translate > header {
     text-align: right;
 }
-.App > nav {
-    text-align: center;
-}
-.App > nav ul {
+
+.Reviews ul {
+    border: 1px solid gray;
+    border-radius: 3px;
     list-style: none;
+    padding: 0;
 }
-.App > nav ul li {
-    display: inline;
+.Reviews ul li {
+    padding: 10px 20px;
 }
-.App > nav ul li a {
-    font-weight: bold;
-    padding: 20px;
-    text-transform: uppercase;
+.Reviews ul li + li {
+    border-top: 1px solid gray;
+}
+
+.Review header p {
+    color: #666;
+}
+.Review .suggestion {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+.Review .suggestion .diff p {
+    margin: 0;
+    padding: 10px;
+}
+.Review .suggestion .diff .original {
+    background-color: #f1f8ff;
+    color: rgba(27,31,35,0.5);
+}
+.Review .suggestion .diff .approved {
+    background-color: #ffeef0;
+}
+.Review .suggestion .diff .suggested {
+    background-color: #e6ffed;
+}
+.Review footer {
+    border: 1px solid #34d058;
+    border-radius: 3px;
+}
+.Review footer h2 {
+    margin: 0;
+    padding: 10px 20px;
+}
+.Review footer .review-commands {
+    padding: 0 20px 20px 20px;
 }
 
 .EntitiesList {
@@ -77,24 +107,42 @@ button {
 .CommentsList {
     list-style: none;
     padding: 0;
-    width: 80%;
+    margin: 0;
 }
 .CommentsList li {
-    border: 1px solid darkgray;
-    border-radius: 2px;
+    border-top: 1px solid #ccc;
     padding: 0 20px;
-    margin: 10px 0;
+    margin: 0;
 }
 .CommentsList li img {
-    max-width: 32px;
-    margin-right: 10px;
 }
 .CommentsList li time {
     color: darkgray;
     font-style: italic;
 }
 
+.CommentForm {
+    background-color: #eee;
+    border-top: 1px solid #ccc;
+}
+.CommentForm > div {
+    padding: 10px;
+}
 .CommentForm textarea {
     height: 100px;
-    width: 80%;
+    padding: 5px;
+}
+.CommentForm .controls {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.avatar {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    line-height: 1;
+    margin-right: 10px;
+    overflow: hidden;
+    vertical-align: middle;
+    width: 32px;
 }

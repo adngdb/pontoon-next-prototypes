@@ -13,7 +13,7 @@ export default class BranchSelector extends React.Component {
         const { branches, currentBranch } = this.props;
 
         return (<select value={ currentBranch } onChange={ this.handleChange }>
-            <option value=''></option>
+            <option value=''>None</option>
             { branches.map(
                 (branch, i) => <option value={ branch.id } key={ i }>{ branch.name }</option>
             ) }

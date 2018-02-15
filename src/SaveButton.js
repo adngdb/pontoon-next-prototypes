@@ -18,15 +18,22 @@ export default class SaveButton extends React.Component {
     render() {
         const { currentBranch, hasExistingSuggestion } = this.props;
 
-        let label = 'Suggest';
+        let title = 'Save new suggestion';
+        let label = 'Save';
 
         if (!currentBranch) {
             label = 'Create Branch';
+            title = 'Create a new branch to start translating';
         }
         else if (hasExistingSuggestion) {
             label = 'Update';
+            title = 'Update current suggestion';
         }
 
-        return <button onClick={ this.onClick }>{ label }</button>;
+        return (
+            <button className='pure-button' title={ title } onClick={ this.onClick }>
+                { label }
+            </button>
+        );
     }
 }

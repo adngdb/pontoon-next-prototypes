@@ -65,6 +65,11 @@ const store = createStoreWithMiddleware(nextApp, {
         {
             id: getUID(),
             name: 'test branch',
+            user: 'Adrian',
+            avatar: 'https://avatars1.githubusercontent.com/u/328790?s=56&v=4',
+            open: true,
+            merged: false,
+            comments: [],
             suggestions: [
                 {
                     locale: 'fr',
@@ -73,10 +78,31 @@ const store = createStoreWithMiddleware(nextApp, {
                     comments: [
                         {
                             comment: 'There\'s a typo, "Rois" instead of "Rios". Otherwise, looks good!',
-                            created_at: new Date(),
+                            created_at: new Date('2018-02-15T14:01:40.500Z'),
+                            user: 'Matjaz',
+                            avatar: 'https://avatars0.githubusercontent.com/u/626716?s=56&v=4',
                         },
                     ],
-                }
+                },
+                {
+                    locale: 'fr',
+                    entity: e1,
+                    string: 'Et sur le piédestal on pouvait lire ces mots :',
+                    comments: [
+                        {
+                            comment: 'This is not what Wikipedia says is the actual translation: https://fr.wikipedia.org/wiki/Ozymandias_(po%C3%A8me,_Percy_Bysshe_Shelley)',
+                            created_at: new Date('2018-02-15T14:50:40.500Z'),
+                            user: 'flod',
+                            avatar: 'https://avatars0.githubusercontent.com/u/3644868?s=56&v=4',
+                        },
+                        {
+                            comment: 'Yes, but I think this sounds a lot better in French. Also, there have been multiple translations of that poem, and Wikipedia\'s is only one of them.',
+                            created_at: new Date(),
+                            user: 'Adrian',
+                            avatar: 'https://avatars0.githubusercontent.com/u/328790?s=56&v=4',
+                        },
+                    ],
+                },
             ],
         }
     ],

@@ -40,7 +40,7 @@ export function updateSuggestion(entity, locale, branch, string) {
 }
 
 export function approveSuggestion(suggestion) {
-    return function (dispatch) {
+    return dispatch => {
         dispatch(addTranslation(suggestion.entity, suggestion.locale, suggestion.string));
         dispatch(rejectSuggestion(suggestion));
     };
@@ -55,12 +55,22 @@ export function rejectSuggestion(suggestion) {
     };
 }
 
-export const ADD_COMMENT = 'ADD_COMMENT';
-export function addComment(entity, locale, comment) {
+export const ADD_TRANSLATION_COMMENT = 'ADD_TRANSLATION_COMMENT';
+export function addTranslationComment(branch, entity, locale, comment) {
     return {
-        type: ADD_COMMENT,
+        type: ADD_TRANSLATION_COMMENT,
+        branch,
         entity,
         locale,
+        comment,
+    };
+}
+
+export const ADD_BRANCH_COMMENT = 'ADD_BRANCH_COMMENT';
+export function addBranchComment(branch, comment) {
+    return {
+        type: ADD_BRANCH_COMMENT,
+        branch,
         comment,
     };
 }
@@ -74,10 +84,10 @@ export function createBranch(id, name) {
     };
 }
 
-export const DELETE_BRANCH = 'DELETE_BRANCH';
-export function deleteBranch(id) {
+export const OPEN_BRANCH = 'OPEN_BRANCH';
+export function sendBranchForReview(id) {
     return {
-        type: DELETE_BRANCH,
+        type: OPEN_BRANCH,
         id,
     };
 }
@@ -87,5 +97,35 @@ export function selectBranch(branchId) {
     return {
         type: SELECT_BRANCH,
         branchId,
+    };
+}
+
+export const CLOSE_BRANCH = 'CLOSE_BRANCH';
+export function closeBranch(branchId) {
+    return {
+        type: CLOSE_BRANCH,
+        id: branchId,
+    };
+}
+
+export const MARK_BRANCH_AS_MERGED = 'MARK_BRANCH_AS_MERGED';
+function markBranchAsMerged(branchId) {
+    return {
+        type: MARK_BRANCH_AS_MERGED,
+        id: branchId,
+    };
+}
+
+export function mergeBranch(branch) {
+    return dispatch => {
+        for (const translation of branch.suggestions) {
+            dispatch(addTranslation(
+                translation.entity,
+                translation.locale,
+                translation.string
+            ));
+        }
+        dispatch(markBranchAsMerged(branch.id));
+        dispatch(closeBranch(branch.id));
     };
 }

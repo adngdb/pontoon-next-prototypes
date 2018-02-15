@@ -30,8 +30,8 @@ export default class CommentsList extends React.Component {
                 {this.props.comments.map((comment, i) => (
                     <li key={i}>
                         <p>
-                            <img src='http://www.auriflama.sp.gov.br/app/webroot/img/avatar-user.png' alt='avatar' />
-                            <span>User</span>{' '}
+                            <img src={ comment.avatar } className='avatar' alt='avatar' />
+                            <span>{ comment.user }</span>{' '}
                             <time dateTime={ comment.created_at.toISOString() }>
                                 { moment(comment.created_at).fromNow() }
                             </time>
